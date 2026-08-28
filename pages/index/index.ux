@@ -1,0 +1,170 @@
+<template>
+
+<div class="page">
+
+<div class="title">
+60s-
+</div>
+
+
+<div class="day">
+第 {{day}} 天
+</div>
+
+
+<div class="shelter">
+
+<image 
+src="/assets/ted.png"
+class="person"
+/>
+
+<image 
+src="/assets/dolores.png"
+class="person"
+/>
+
+<image 
+src="/assets/mary.png"
+class="person"
+/>
+
+<image 
+src="/assets/timmy.png"
+class="person"
+/>
+
+</div>
+
+
+
+<div class="diary">
+
+📖 今日事件
+
+{{eventText}}
+
+</div>
+
+
+
+<div class="choice">
+
+
+<button onclick="choose(0)">
+{{option1}}
+</button>
+
+
+<button onclick="choose(1)">
+{{option2}}
+</button>
+
+
+</div>
+
+
+
+<div class="inventory">
+
+🥫 {{can}}
+
+💧 {{water}}
+
+💊 {{medkit}}
+
+📻 {{radio}}
+
+</div>
+
+
+
+<button onclick="nextDay()">
+
+翻开日记
+
+</button>
+
+
+</div>
+
+</template>
+
+
+
+<script>
+
+export default {
+
+
+data:{
+
+
+day:1,
+
+
+eventText:
+"地下室里很安静，外面传来奇怪声音。",
+
+
+option1:
+"打开避难所门",
+
+
+option2:
+"保持安静",
+
+
+can:5,
+
+water:5,
+
+medkit:1,
+
+radio:1
+
+
+},
+
+
+
+nextDay(){
+
+
+this.day++;
+
+
+this.eventText=
+"第"+this.day+"天：新的事件发生";
+
+
+},
+
+
+
+choose(index){
+
+
+if(index==0){
+
+this.eventText=
+"你打开了门，结果未知……";
+
+
+}
+
+else{
+
+this.eventText=
+"你选择等待。";
+
+}
+
+
+}
+
+
+
+}
+
+</script>
