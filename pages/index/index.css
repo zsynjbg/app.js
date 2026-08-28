@@ -1,1 +1,53 @@
+.game {
+    width: 336px;
+    height: 480px;
+    background-color: #111111;
+    color: #ffffff;
+    padding: 10px;
+}
 
+.title {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.day {
+    font-size: 16px;
+    text-align: center;
+    color: #aaaaaa;
+}
+
+.family {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.person {
+    background-color: #222222;
+    margin: 3px;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.event {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #333333;
+    border-radius: 8px;
+}
+
+button {
+    margin-top: 15px;
+    width: 200px;
+    height: 40px;
+    background-color: #555555;
+    color: white;
+}
+
+.bag {
+    margin-top: 15px;
+    padding: 8px;
+    background-color: #1b1b1b;
+}
