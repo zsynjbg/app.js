@@ -7,7 +7,17 @@ export default {
 data:{
 
 
+mode:"shelter",
+
+
 day:1,
+
+
+searchTime:60,
+
+
+location:"客厅",
+
 
 
 family:{
@@ -15,27 +25,21 @@ family:{
 
 ted:{
 name:"泰德",
-health:100,
-hunger:0,
-thirst:0,
-crazy:0,
+alive:true,
 capacity:4
 },
 
 
 dolores:{
 name:"多洛雷斯",
-health:100,
-hunger:0,
-thirst:0,
-crazy:0,
+alive:false,
 capacity:2
 },
 
 
 mary:{
 name:"玛丽·简",
-health:100,
+alive:false,
 mutated:false,
 capacity:3
 },
@@ -43,10 +47,7 @@ capacity:3
 
 timmy:{
 name:"蒂米",
-health:100,
-hunger:0,
-thirst:0,
-crazy:0,
+alive:false,
 capacity:3
 }
 
@@ -58,40 +59,45 @@ capacity:3
 items:{
 
 
-can:5,
-water:5,
-medkit:1,
-mask:1,
-flashlight:1,
-book:1,
-axe:1,
-gun:1,
-bullet:3,
-radio:1,
-card:1,
-chess:1,
-case:1
+can:0,
+water:0,
+medkit:0,
+mask:0,
+radio:0,
+axe:0,
+bullet:0
 
+},
+
+
+
+loot:{
+
+
+can:0,
+water:0,
+medkit:0,
+radio:0
 
 },
 
 
 
 eventText:
-"避难所建立完成，等待第一天。",
+"核爆发生！60秒搜刮开始！",
 
 
 
 options:[
 
-"打开门",
+"进入厨房",
 
-"保持安静"
+"进入卧室"
 
 ]
 
-
 },
+
 
 
 
@@ -103,189 +109,228 @@ this.loadGame()
 
 
 
-// 下一天
 
-nextDay(){
-
-
-this.day++
+// 开始60秒搜刮
 
 
-// 消耗资源
-
-this.consume()
+startScavenge(){
 
 
-
-// 随机事件
-
-this.randomEvent()
+this.mode="scavenge";
 
 
+this.searchTime=60;
 
-// 保存
 
-this.saveGame()
+this.eventText=
+"快！寻找家人和物资！";
 
 
 },
 
 
 
-// 每日资源消耗
-
-consume(){
 
 
-// 有水就减少口渴
-
-if(this.items.water>0){
-
-this.items.water--
-
-}else{
+// 房间移动
 
 
-this.family.ted.thirst+=20
-this.family.timmy.thirst+=20
+moveRoom(room){
 
+
+if(this.mode!="scavenge"){
+
+return;
 
 }
 
 
 
-// 有罐头减少饥饿
-
-if(this.items.can>0){
-
-this.items.can--
-
-}else{
+this.location=room;
 
 
-this.family.ted.hunger+=20
-this.family.dolores.hunger+=20
-this.family.timmy.hunger+=20
-
-
-}
-
-
-
-// 娱乐不足增加疯狂
-
-this.family.ted.crazy+=5
-this.family.dolores.crazy+=5
-this.family.timmy.crazy+=5
-
-
-},
-
-
-
-// 随机事件
-
-randomEvent(){
-
-
-let list=[
-
-
-{
-
-text:"疯狂敲门声响起，外面有人求救。",
-
-a:"打开门",
-b:"不开门"
-
-},
-
-
-{
-
-text:"蟑螂开始大量繁殖。",
-
-a:"使用斧头",
-b:"继续观察"
-
-},
-
-
-{
-
-text:"收音机收到微弱军方信号。",
-
-a:"继续收听",
-b:"关闭收音机"
-
-},
-
-
-{
-
-text:"绿色液体从管道流出。",
-
-a:"调查",
-b:"忽略"
-
-}
-
-
-]
+this.searchTime-=10;
 
 
 
 let r=Math.floor(
-Math.random()*list.length
-)
+Math.random()*5
+);
 
 
-this.eventText=list[r].text
 
-this.options[0]=list[r].a
+if(r==0){
 
-this.options[1]=list[r].b
+
+this.loot.can++;
+
+this.eventText=
+"发现罐头！";
+
+
+}
+
+
+
+if(r==1){
+
+
+this.loot.water++;
+
+this.eventText=
+"发现水瓶！";
+
+
+}
+
+
+
+if(r==2){
+
+
+this.family.dolores.alive=true;
+
+this.eventText=
+"找到妈妈多洛雷斯！";
+
+
+}
+
+
+
+if(r==3){
+
+
+this.family.mary.alive=true;
+
+this.eventText=
+"找到女儿玛丽·简！";
+
+
+}
+
+
+
+if(r==4){
+
+
+this.family.timmy.alive=true;
+
+this.eventText=
+"找到儿子蒂米！";
+
+
+}
+
+
+
+
+if(this.searchTime<=0){
+
+
+this.finishScavenge();
+
+
+}
 
 
 },
 
 
 
-// 事件选择
+
+
+// 搜刮结束
+
+
+finishScavenge(){
+
+
+this.mode="shelter";
+
+
+//物资进入避难所
+
+this.items.can+=this.loot.can;
+
+this.items.water+=this.loot.water;
+
+this.items.medkit+=this.loot.medkit;
+
+this.items.radio+=this.loot.radio;
+
+
+
+this.eventText=
+"60秒结束，进入地下避难所。";
+
+
+
+this.saveGame();
+
+
+},
+
+
+
+
+
+// 下一天
+
+
+nextDay(){
+
+
+this.day++;
+
+
+
+this.eventText=
+"第"+this.day+"天，日记翻开。";
+
+
+
+this.saveGame();
+
+
+},
+
+
+
+
+
+// 选择事件
+
 
 choose(i){
 
 
 if(i==0){
 
-
 this.eventText=
-"你选择了第一个方案，结果未知。"
-
+"你选择了第一个方案。";
 
 }else{
 
-
 this.eventText=
-"你选择等待。"
-
+"你选择了第二个方案。";
 
 }
-
-
-this.saveGame()
 
 
 },
 
 
 
+
+
 // 保存
+
 
 saveGame(){
 
 
-let data={
+let save={
 
 
 day:this.day,
@@ -294,8 +339,7 @@ family:this.family,
 
 items:this.items
 
-
-}
+};
 
 
 
@@ -303,16 +347,19 @@ storage.set({
 
 key:"60s_save",
 
-value:JSON.stringify(data)
+value:JSON.stringify(save)
 
-})
+});
 
 
 },
 
 
 
-// 读取
+
+
+//读取
+
 
 loadGame(){
 
@@ -328,14 +375,14 @@ success:(data)=>{
 if(data){
 
 
-let save=JSON.parse(data)
+let save=JSON.parse(data);
 
 
-this.day=save.day
+this.day=save.day;
 
-this.family=save.family
+this.family=save.family;
 
-this.items=save.items
+this.items=save.items;
 
 
 }
