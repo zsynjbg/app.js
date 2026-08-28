@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "60s-",
+    "versionName": "1.0.0",
+    "versionCode": 1
+  },
+
+  "pages": [
+    "pages/index/index"
+  ]
+}
