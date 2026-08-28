@@ -1,15 +1,19 @@
+import storage from '@system.storage'
+
+
 export default {
 
-data: {
 
-day: 1,
+data:{
 
 
-// 四名家庭成员
+day:1,
 
-family: {
 
-ted: {
+family:{
+
+
+ted:{
 name:"泰德",
 health:100,
 hunger:0,
@@ -46,12 +50,13 @@ crazy:0,
 capacity:3
 }
 
+
 },
 
 
-// 初始物资
 
 items:{
+
 
 can:5,
 water:5,
@@ -67,86 +72,283 @@ card:1,
 chess:1,
 case:1
 
+
 },
 
 
 
 eventText:
-"地下避难所很安静，外面传来奇怪声音。",
+"避难所建立完成，等待第一天。",
+
 
 
 options:[
 
-"打开避难所门",
+"打开门",
 
 "保持安静"
 
 ]
 
+
 },
 
 
 
-// 翻开下一天
+onInit(){
+
+this.loadGame()
+
+},
+
+
+
+// 下一天
 
 nextDay(){
 
 
-this.day++;
+this.day++
 
 
-let events=[
+// 消耗资源
+
+this.consume()
 
 
-"疯狂敲门声响起，也许是救援，也许是强盗。",
 
-"蟑螂开始大量繁殖。",
+// 随机事件
 
-"通风管道传来奇怪声音。",
-
-"收音机收到微弱信号。",
-
-"发现绿色液体泄漏。"
-
-];
+this.randomEvent()
 
 
-let r=Math.floor(
-Math.random()*events.length
-);
 
+// 保存
 
-this.eventText=
-"第"+this.day+"天："+
-events[r];
+this.saveGame()
 
 
 },
 
 
 
-// 选择事件
+// 每日资源消耗
 
-choose(index){
+consume(){
 
 
-if(index===0){
+// 有水就减少口渴
+
+if(this.items.water>0){
+
+this.items.water--
+
+}else{
+
+
+this.family.ted.thirst+=20
+this.family.timmy.thirst+=20
+
+
+}
+
+
+
+// 有罐头减少饥饿
+
+if(this.items.can>0){
+
+this.items.can--
+
+}else{
+
+
+this.family.ted.hunger+=20
+this.family.dolores.hunger+=20
+this.family.timmy.hunger+=20
+
+
+}
+
+
+
+// 娱乐不足增加疯狂
+
+this.family.ted.crazy+=5
+this.family.dolores.crazy+=5
+this.family.timmy.crazy+=5
+
+
+},
+
+
+
+// 随机事件
+
+randomEvent(){
+
+
+let list=[
+
+
+{
+
+text:"疯狂敲门声响起，外面有人求救。",
+
+a:"打开门",
+b:"不开门"
+
+},
+
+
+{
+
+text:"蟑螂开始大量繁殖。",
+
+a:"使用斧头",
+b:"继续观察"
+
+},
+
+
+{
+
+text:"收音机收到微弱军方信号。",
+
+a:"继续收听",
+b:"关闭收音机"
+
+},
+
+
+{
+
+text:"绿色液体从管道流出。",
+
+a:"调查",
+b:"忽略"
+
+}
+
+
+]
+
+
+
+let r=Math.floor(
+Math.random()*list.length
+)
+
+
+this.eventText=list[r].text
+
+this.options[0]=list[r].a
+
+this.options[1]=list[r].b
+
+
+},
+
+
+
+// 事件选择
+
+choose(i){
+
+
+if(i==0){
 
 
 this.eventText=
-"你选择打开门，结果未知……";
+"你选择了第一个方案，结果未知。"
 
 
 }else{
 
 
 this.eventText=
-"你选择等待，暂时安全。";
+"你选择等待。"
+
+
+}
+
+
+this.saveGame()
+
+
+},
+
+
+
+// 保存
+
+saveGame(){
+
+
+let data={
+
+
+day:this.day,
+
+family:this.family,
+
+items:this.items
+
+
+}
+
+
+
+storage.set({
+
+key:"60s_save",
+
+value:JSON.stringify(data)
+
+})
+
+
+},
+
+
+
+// 读取
+
+loadGame(){
+
+
+storage.get({
+
+key:"60s_save",
+
+
+success:(data)=>{
+
+
+if(data){
+
+
+let save=JSON.parse(data)
+
+
+this.day=save.day
+
+this.family=save.family
+
+this.items=save.items
 
 
 }
 
 
 }
+
+
+})
+
+
+}
+
+
 
 }
