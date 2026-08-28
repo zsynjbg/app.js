@@ -1,1 +1,72 @@
+<page>
+    <div class="game">
 
+        <text class="title">
+            60s- 地下避难所
+        </text>
+
+        <text class="day">
+            第1天
+        </text>
+
+        <div class="family">
+
+            <text class="person">
+                👨 泰德
+            </text>
+
+            <text class="person">
+                👩 多洛雷斯
+            </text>
+
+            <text class="person">
+                👧 玛丽·简
+            </text>
+
+            <text class="person">
+                👦 蒂米
+            </text>
+
+        </div>
+
+
+        <div class="event">
+
+            <text>
+                今日日记：
+            </text>
+
+            <text>
+                地下室传来奇怪声音……
+            </text>
+
+        </div>
+
+
+        <button onclick="nextDay">
+            翻开日记
+        </button>
+
+
+        <div class="bag">
+
+            <text>
+                物资:
+            </text>
+
+            <text>
+                🥫罐头 0
+            </text>
+
+            <text>
+                💧水 0
+            </text>
+
+            <text>
+                💊医疗包 0
+            </text>
+
+        </div>
+
+    </div>
+</page>
