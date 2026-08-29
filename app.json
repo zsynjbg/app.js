@@ -1,11 +1,10 @@
 {
-  "app": {
-    "name": "60s-",
-    "versionName": "1.0.0",
-    "versionCode": 1
-  },
-
   "pages": [
     "pages/index/index"
-  ]
+  ],
+  "window": {
+    "backgroundColor": "#111111",
+    "navigationBarTitleText": "60秒：地下避难所",
+    "navigationBarTextStyle": "white"
+  }
 }
