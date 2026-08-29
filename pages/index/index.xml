@@ -1,72 +1,80 @@
-<page>
-    <div class="game">
+<div class="page">  <text class="title">  
+60秒：地下避难所  
+</text>  <div class="status">  <text>  
+模式：{{mode}}  
+</text>  <text>  
+第 {{day}} 天  
+</text>  <text if="{{mode=='scavenge'}}">  
+剩余时间：{{time}}秒  
+</text>  </div>  <div class="event">  <text>  
+{{eventText}}  
+</text>  </div>  <!-- 搜刮阶段 -->  <div if="{{mode=='scavenge'}}">  <text class="tip">  
+控制泰德寻找家人和物资  
+</text>  <button onclick="searchRoom('厨房')">  
+进入厨房  
+</button>  <button onclick="searchRoom('卧室')">  
+进入卧室  
+</button>  <button onclick="searchRoom('浴室')">  
+进入浴室  
+</button>  <button onclick="searchRoom('客厅')">  
+进入客厅  
+</button>  </div>  <!-- 避难所阶段 -->  <div if="{{mode=='shelter'}}">  <button onclick="nextDay()">  
+翻开日记（进入下一天）  
+</button>  </div>  
+<!-- 家庭成员状态 -->  <div class="family">  <text class="subtitle">  
+家庭成员  
+</text>  <div>  <text>  
+👨 泰德：  
+{{family.ted.alive?'存活':'死亡'}}  
+ HP:{{family.ted.health}}  
+</text>  </div>  <div>  <text>  
+👩 多洛雷斯：  
+{{family.dolores.alive?'存活':'死亡'}}  
+ HP:{{family.dolores.health}}  
+</text>  </div>  <div>  <text>  
+👧 玛丽·简：  
+{{family.mary.alive?'存活':'死亡'}}  
+{{family.mary.mutated?'（已变异）':''}}  
+</text>  </div>  <div>  <text>  
+👦 蒂米：  
+{{family.timmy.alive?'存活':'死亡'}}  
+ HP:{{family.timmy.health}}  
+</text>  </div>  </div>  <!-- 物资 -->  <div class="items">  <text class="subtitle">  
+地下室库存  
+</text>  <text>  
+🥫 罐头：{{items.can}}  
+</text>  <text>  
+💧 水：{{items.water}}  
+</text>  <text>  
+💊 医疗包：{{items.medkit}}  
+</text>  <text>  
+☢ 防毒面具：{{items.mask}}  
+</text>  <text>  
+🔦 手电筒：{{items.flashlight}}  
+</text>  <text>  
+📖 童子军手册：{{items.book}}  
+</text>  <text>  
+🪓 斧头：{{items.axe}}  
+</text>  <text>  
+📻 收音机：{{items.radio}}  
+</text>  <text>  
+🃏 纸牌：{{items.card}}  
+</text>  <text>  
+♟ 棋盘：{{items.chess}}  
+</text>  </div>  
+<!-- 事件操作 -->  <div class="actions">  <button   
+if="{{story.bandit}}"  
+onclick="banditAttack()">
+处理强盗事件
+</button>
 
-        <text class="title">
-            60s- 地下避难所
-        </text>
-
-        <text class="day">
-            第1天
-        </text>
-
-        <div class="family">
-
-            <text class="person">
-                👨 泰德
-            </text>
-
-            <text class="person">
-                👩 多洛雷斯
-            </text>
-
-            <text class="person">
-                👧 玛丽·简
-            </text>
-
-            <text class="person">
-                👦 蒂米
-            </text>
-
-        </div>
-
-
-        <div class="event">
-
-            <text>
-                今日日记：
-            </text>
-
-            <text>
-                地下室传来奇怪声音……
-            </text>
-
-        </div>
-
-
-        <button onclick="nextDay">
-            翻开日记
-        </button>
-
-
-        <div class="bag">
-
-            <text>
-                物资:
-            </text>
-
-            <text>
-                🥫罐头 0
-            </text>
-
-            <text>
-                💧水 0
-            </text>
-
-            <text>
-                💊医疗包 0
-            </text>
-
-        </div>
-
-    </div>
-</page>
+<button onclick="choose(0)">  
+选择方案A  
+</button>  <button onclick="choose(1)">  
+选择方案B  
+</button>  </div>  <!-- 当前地点 -->  <div>  <text>  
+当前位置：{{location}}  
+</text>  </div>  <!-- 游戏结束提示 -->  <div>  <text>  
+结局：  
+{{checkEnding()}}  
+</text>  </div>  </div>  
